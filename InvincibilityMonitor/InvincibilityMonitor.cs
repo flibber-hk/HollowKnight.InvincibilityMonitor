@@ -44,11 +44,14 @@ namespace InvincibilityMonitor
 
             if (Input.GetKeyDown(KeyCode.P))
             {
-                Log(Conditions.InvincibleWhileDialogueActive.DialogueCount);
-
                 Log(InvincibilityCondition.AnyConditionInvincible ? "Invincible"
                 : InvincibilityCondition.TimerSafety ? "Waiting"
                 : "Vulnerable");
+
+                foreach (string s in InvincibilityCondition.GetCurrentlyInvincibleConditions())
+                {
+                    Log("INVINCIBLE DUE TO " + s);
+                }
             }
         }
     }

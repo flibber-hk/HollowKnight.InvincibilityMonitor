@@ -7,6 +7,13 @@ namespace InvincibilityMonitor.Conditions
 {
     public class InvincibleWhileRoarLocked : InvincibilityCondition
     {
+        private static readonly HashSet<string> ExcludedScenes = new HashSet<string>()
+        {
+            // Exclude these scenes because they're handled in CollectingItem
+            "Mines_35",
+            "Ruins1_31b",
+        };
+
         private static readonly HashSet<string> RoarStates = new HashSet<string>()
         {
             "Lock Start",
@@ -29,6 +36,7 @@ namespace InvincibilityMonitor.Conditions
             }
         }
 
-        protected override bool ConditionActive => RoarStates.Contains(roarFsm?.ActiveStateName ?? string.Empty);
+        protected override bool ConditionActive => 
+            RoarStates.Contains(roarFsm?.ActiveStateName ?? string.Empty) && !ExcludedScenes.Contains(GameManager.instance.sceneName);
     }
 }

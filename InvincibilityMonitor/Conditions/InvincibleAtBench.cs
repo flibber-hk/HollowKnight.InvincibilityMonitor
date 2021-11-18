@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using Modding;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using Modding;
 using Vasi;
 
 namespace InvincibilityMonitor.Conditions
@@ -15,21 +12,11 @@ namespace InvincibilityMonitor.Conditions
         protected override void Hook()
         {
             ModHooks.Instance.HeroUpdateHook += OnUpdate;
-            UnityEngine.SceneManagement.SceneManager.sceneLoaded += PatchSpiderBench;
+            Hooks.OnFsmEnable += PatchSpiderBench;
         }
 
         private void OnUpdate()
         {
-            if (!HeroController.instance.controlReqlinquished) _spiderBench = false;
-        }
-
-        private void PatchSpiderBench(Scene scene, LoadSceneMode lsm)
-        {
-            if (scene.name == "Deepnest_Spider_Town")
-            {
-                GameManager.instance.StartCoroutine(PatchSpiderBenchDelay());
-            }
-
             if (PlayerData.instance.GetBool(nameof(PlayerData.atBench)))
             {
                 _regularBench = true;
@@ -37,16 +24,16 @@ namespace InvincibilityMonitor.Conditions
             else if (!HeroController.instance.controlReqlinquished)
             {
                 _regularBench = false;
+                _spiderBench = false;
             }
         }
 
-        private IEnumerator PatchSpiderBenchDelay()
+        private void PatchSpiderBench(PlayMakerFSM fsm)
         {
-            yield return null;
-
-            GameObject spiderBench = GameObject.Find("RestBench Spider");
-            spiderBench.LocateMyFSM("Bench Control Spider").GetState("Start Rest").InsertMethod(2, () => _spiderBench = true);
-            // spiderBench.LocateMyFSM("Bench Control Spider").GetState("Start Rest").RemoveAction<HutongGames.PlayMaker.Actions.SendEventByName>();
+            if (fsm.FsmName == "Bench Control Spider" && fsm.gameObject.scene.name == "Deepnest_Spider_Town" && fsm.gameObject.name == "RestBench Spider")
+            {
+                fsm.GetState("Start Rest").InsertMethod(2, () => _spiderBench = true);
+            }
         }
     }
 }

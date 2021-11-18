@@ -30,7 +30,14 @@ namespace InvincibilityMonitor
         protected virtual void Hook() { }
 
         public static List<InvincibilityCondition> ActiveConditions = new List<InvincibilityCondition>();
-        
+        public static IEnumerable<string> GetCurrentlyInvincibleConditions()
+        {
+            foreach (InvincibilityCondition condition in ActiveConditions)
+            {
+                if (condition.Invincible)
+                    yield return condition.GetType().Name;
+            }
+        }
 
         public static bool AnyConditionInvincible
         {
@@ -68,7 +75,7 @@ namespace InvincibilityMonitor
             bool internalValue = PlayerData.instance.GetBoolInternal(originalSet);
             if (originalSet == nameof(PlayerData.isInvincible))
             {
-                return internalValue || AnyConditionInvincible || TimerSafety;
+                return internalValue || TimerSafety;
             }
             return internalValue;
         }

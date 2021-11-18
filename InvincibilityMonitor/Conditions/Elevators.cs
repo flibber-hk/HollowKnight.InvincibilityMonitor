@@ -71,14 +71,13 @@ namespace InvincibilityMonitor.Conditions
 
         protected override void Hook()
         {
-            On.HeroController.Start += AddLeverRangeMonitor;
+            Hooks.OnHeroStart += AddLeverRangeMonitor;
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged += PatchHeroCheck;
         }
 
-        private void AddLeverRangeMonitor(On.HeroController.orig_Start orig, HeroController self)
+        private void AddLeverRangeMonitor(HeroController hero)
         {
-            orig(self);
-            self.gameObject.AddComponent<LeverRangeMonitor>();
+            hero.gameObject.AddComponent<LeverRangeMonitor>();
         }
 
         private void PatchHeroCheck(Scene oldScene, Scene scene)

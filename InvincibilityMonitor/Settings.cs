@@ -12,6 +12,5 @@ namespace InvincibilityMonitor
         public bool DebugInfo = false;
 
         public Dictionary<string, bool> EnabledConditions = new Dictionary<string, bool>();
-
     }
 }

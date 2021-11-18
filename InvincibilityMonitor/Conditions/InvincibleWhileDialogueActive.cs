@@ -2,42 +2,53 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Modding;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Vasi;
 
 namespace InvincibilityMonitor.Conditions
 {
     public class InvincibleWhileDialogueActive : InvincibilityCondition
     {
-        public static int DialogueCount = 0;
-        protected override bool ConditionActive => DialogueCount > 0;
+        public bool ShownDialogue = false;
+        protected override bool ConditionActive => ShownDialogue || AnyDialogueActive;
 
         protected override void Hook()
         {
-            On.InvAnimateUpAndDown.AnimateUp += InvAnimateUpAndDown_AnimateUp;
-            On.InvAnimateUpAndDown.AnimateDown += InvAnimateUpAndDown_AnimateDown;
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
+            On.InvAnimateUpAndDown.AnimateUp += OnShowDialogue;
+            ModHooks.Instance.HeroUpdateHook += HiddenDialogue;
+            Hooks.OnFsmEnable += EditStagControl;
+            Hooks.OnHeroAnimPlay += DialogueAnim;
         }
 
-        private void SceneManager_activeSceneChanged(Scene arg0, Scene arg1)
+        public bool AnyDialogueActive => ((Ref.BoxOpen.Value.ActiveStateName == "Box Up")
+            || (Ref.BoxOpenYN.Value.ActiveStateName == "Box Up")
+            || (Ref.BoxOpenDream.Value.ActiveStateName == "Box Up")) && HeroController.instance.controlReqlinquished;
+
+        private void DialogueAnim(string clipName)
         {
-            DialogueCount = 0;
+            if (clipName == "TurnToBG")
+                ShownDialogue = true;
         }
-
-        private void InvAnimateUpAndDown_AnimateDown(On.InvAnimateUpAndDown.orig_AnimateDown orig, InvAnimateUpAndDown self)
+        private void HiddenDialogue()
+        {
+            if (!HeroController.instance.controlReqlinquished)
+                ShownDialogue = false;
+        }
+        private void EditStagControl(PlayMakerFSM fsm)
+        {
+            if (fsm.FsmName == "Stag Control")
+            {
+                fsm.GetState("Take Control").AddMethod(() => ShownDialogue = true);
+            }
+        }
+        private void OnShowDialogue(On.InvAnimateUpAndDown.orig_AnimateUp orig, InvAnimateUpAndDown self)
         {
             orig(self);
             if (InventoryObject(self.transform)) return;
-            DialogueCount = Math.Max(DialogueCount - 1, 0);
+            if (self.gameObject.scene.name.StartsWith("Grimm_Nightmare")) return;
+            ShownDialogue = true;
         }
-
-        private void InvAnimateUpAndDown_AnimateUp(On.InvAnimateUpAndDown.orig_AnimateUp orig, InvAnimateUpAndDown self)
-        {
-            orig(self);
-            if (InventoryObject(self.transform)) return;
-            DialogueCount++;
-        }
-
         private bool InventoryObject(Transform t)
         {
             if (t.name == "Inventory") return true;

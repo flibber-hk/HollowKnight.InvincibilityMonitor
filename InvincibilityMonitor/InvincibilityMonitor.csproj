@@ -62,11 +62,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conditions\Elevators.cs" />
+    <Compile Include="Conditions\InvincibleWhileWaking.cs" />
+    <Compile Include="Hooks.cs" />
     <Compile Include="Conditions\InvincibleAtBench.cs" />
+    <Compile Include="Conditions\InvincibleInCutscene.cs" />
     <Compile Include="Conditions\InvincibleWhileDialogueActive.cs" />
     <Compile Include="Conditions\InvincibleWhileRoarLocked.cs" />
+    <Compile Include="Conditions\InvincibleWhileCollectingItem.cs" />
     <Compile Include="Conditions\TransitionInvincibility.cs" />
     <Compile Include="InvincibilityCondition.cs" />
+    <Compile Include="Ref.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="InvincibilityMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
