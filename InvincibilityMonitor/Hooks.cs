@@ -25,7 +25,17 @@ namespace InvincibilityMonitor
         private static void ModifyFsm(On.PlayMakerFSM.orig_OnEnable orig, PlayMakerFSM self)
         {
             orig(self);
-            _onFsmEnable?.Invoke(self);
+            foreach (Action<PlayMakerFSM> toInvoke in _onFsmEnable.GetInvocationList())
+            {
+                try
+                {
+                    toInvoke(self);
+                }
+                catch (Exception ex)
+                {
+                    InvincibilityMonitor.Instance.LogError($"Error invoking subscriber to OnFsmEnable hook:" + ex);
+                }
+            }
         }
         #endregion
 
@@ -48,7 +58,17 @@ namespace InvincibilityMonitor
         private static void ModifyHero(On.HeroController.orig_Start orig, HeroController self)
         {
             orig(self);
-            _onHeroStart?.Invoke(self);
+            foreach (Action<HeroController> toInvoke in _onHeroStart.GetInvocationList())
+            {
+                try
+                {
+                    toInvoke(self);
+                }
+                catch (Exception ex)
+                {
+                    InvincibilityMonitor.Instance.LogError($"Error invoking subscriber to OnHeroStart hook:" + ex);
+                }
+            }
         }
         #endregion
 
@@ -77,7 +97,18 @@ namespace InvincibilityMonitor
                 return;
             }
 
-            _onHeroAnimPlay?.Invoke(clip.name);
+            foreach (Action<string> toInvoke in _onHeroAnimPlay.GetInvocationList())
+            {
+                try
+                {
+                    toInvoke(clip.name);
+                }
+                catch (Exception ex)
+                {
+                    InvincibilityMonitor.Instance.LogError($"Error invoking subscriber to OnHeroAnimPlay hook:" + ex);
+                }
+            }
+
             orig(self, clip, clipStartTime, overrideFps);
         }
         #endregion

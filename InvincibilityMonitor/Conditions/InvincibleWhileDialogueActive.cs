@@ -18,7 +18,16 @@ namespace InvincibilityMonitor.Conditions
             On.InvAnimateUpAndDown.AnimateUp += OnShowDialogue;
             ModHooks.Instance.HeroUpdateHook += HiddenDialogue;
             Hooks.OnFsmEnable += EditStagControl;
+            Hooks.OnFsmEnable += EditShopRegion;
             Hooks.OnHeroAnimPlay += DialogueAnim;
+        }
+
+        private void EditShopRegion(PlayMakerFSM fsm)
+        {
+            if (fsm.FsmName == "Shop Region")
+            {
+                fsm.GetState("Take Control").AddMethod(() => ShownDialogue = true);
+            }
         }
 
         public bool AnyDialogueActive => ((Ref.BoxOpen.Value.ActiveStateName == "Box Up")

@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conditions\Elevators.cs" />
+    <Compile Include="Conditions\InvincibleWhenFocusingTHK.cs" />
     <Compile Include="Conditions\InvincibleWhileWaking.cs" />
     <Compile Include="Hooks.cs" />
     <Compile Include="Conditions\InvincibleAtBench.cs" />
