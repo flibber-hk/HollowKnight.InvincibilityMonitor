@@ -11,7 +11,7 @@ namespace InvincibilityMonitor.Conditions
 
         protected override void Hook()
         {
-            ModHooks.Instance.HeroUpdateHook += OnUpdate;
+            ModHooks.HeroUpdateHook += OnUpdate;
             Hooks.OnFsmEnable += PatchSpiderBench;
         }
 

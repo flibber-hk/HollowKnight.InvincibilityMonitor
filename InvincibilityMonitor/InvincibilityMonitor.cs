@@ -7,18 +7,15 @@ using UnityEngine;
 
 namespace InvincibilityMonitor
 {
-    public class InvincibilityMonitor : Mod
+    public class InvincibilityMonitor : Mod, IGlobalSettings<GlobalSettings>
     {
         internal static InvincibilityMonitor Instance;
 
         public InvincibilityMonitor() : base(null) { Instance = this; }
 
-        public override ModSettings GlobalSettings 
-        { 
-            get => GS;
-            set => GS = value as GlobalSettings;
-        }
-        public static GlobalSettings GS = new GlobalSettings();
+        public static GlobalSettings GS;
+        public void OnLoadGlobal(GlobalSettings gs) => GS = gs;
+        public GlobalSettings OnSaveGlobal() => GS;
 
         public override string GetVersion()
         {

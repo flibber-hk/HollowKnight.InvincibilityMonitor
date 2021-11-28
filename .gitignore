@@ -4,7 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # Output zip
-PROJECTNAME.zip
+InvincibilityMonitor.zip
 
 # User-specific files
 *.suo

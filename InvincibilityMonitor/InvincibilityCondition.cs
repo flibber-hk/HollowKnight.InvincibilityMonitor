@@ -66,18 +66,17 @@ namespace InvincibilityMonitor
                 ActiveConditions.Add(condition);
             }
 
-            ModHooks.Instance.HeroUpdateHook += OnHeroUpdate;
-            ModHooks.Instance.GetPlayerBoolHook += SetInvincibility;
+            ModHooks.HeroUpdateHook += OnHeroUpdate;
+            ModHooks.GetPlayerBoolHook += SetInvincibility;
         }
 
-        private static bool SetInvincibility(string originalSet)
+        private static bool SetInvincibility(string name, bool orig)
         {
-            bool internalValue = PlayerData.instance.GetBoolInternal(originalSet);
-            if (originalSet == nameof(PlayerData.isInvincible))
+            if (name == nameof(PlayerData.isInvincible))
             {
-                return internalValue || TimerSafety;
+                return orig || TimerSafety;
             }
-            return internalValue;
+            return orig;
         }
 
         private static void OnHeroUpdate()

@@ -16,7 +16,7 @@ namespace InvincibilityMonitor.Conditions
 
         protected override void Hook()
         {
-            ModHooks.Instance.HeroUpdateHook += ClearWhenHaveControl;
+            ModHooks.HeroUpdateHook += ClearWhenHaveControl;
             Hooks.OnHeroAnimPlay += PickingUpAnimation;
 
             Hooks.OnFsmEnable += ModifyFsm;

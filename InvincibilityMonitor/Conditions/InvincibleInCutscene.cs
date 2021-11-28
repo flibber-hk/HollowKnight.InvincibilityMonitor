@@ -10,7 +10,7 @@ namespace InvincibilityMonitor.Conditions
         protected override void Hook()
         {
             On.CinematicPlayer.TriggerStartVideo += StartedCutscene;
-            ModHooks.Instance.HeroUpdateHook += ClearWhenInControl;
+            ModHooks.HeroUpdateHook += ClearWhenInControl;
         }
 
         private void ClearWhenInControl()

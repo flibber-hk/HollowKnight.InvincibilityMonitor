@@ -16,7 +16,7 @@ namespace InvincibilityMonitor.Conditions
         protected override void Hook()
         {
             On.InvAnimateUpAndDown.AnimateUp += OnShowDialogue;
-            ModHooks.Instance.HeroUpdateHook += HiddenDialogue;
+            ModHooks.HeroUpdateHook += HiddenDialogue;
             Hooks.OnFsmEnable += EditStagControl;
             Hooks.OnFsmEnable += EditShopRegion;
             Hooks.OnHeroAnimPlay += DialogueAnim;

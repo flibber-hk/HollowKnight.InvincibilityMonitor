@@ -6,7 +6,7 @@ using Modding;
 
 namespace InvincibilityMonitor
 {
-    public class GlobalSettings : ModSettings
+    public class GlobalSettings
     {
         public float LeniencyTime = 0.2f;
         public bool DebugInfo = false;
