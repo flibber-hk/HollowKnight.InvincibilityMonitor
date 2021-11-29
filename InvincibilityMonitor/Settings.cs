@@ -9,7 +9,7 @@ namespace InvincibilityMonitor
     public class GlobalSettings
     {
         public float LeniencyTime = 0.2f;
-        public bool DebugInfo = false;
+        // public bool DebugInfo = false;
 
         public Dictionary<string, bool> EnabledConditions = new Dictionary<string, bool>();
     }

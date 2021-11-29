@@ -25,13 +25,9 @@ namespace InvincibilityMonitor
         public override void Initialize()
         {
             InvincibilityCondition.Setup();
-
-            if (GS.DebugInfo)
-            {
-                On.GeoCounter.Update += GeoCounter_Update;
-            }
         }
 
+        /*
         private void GeoCounter_Update(On.GeoCounter.orig_Update orig, GeoCounter self)
         {
             orig(self);
@@ -51,5 +47,6 @@ namespace InvincibilityMonitor
                 }
             }
         }
+        */
     }
 }
