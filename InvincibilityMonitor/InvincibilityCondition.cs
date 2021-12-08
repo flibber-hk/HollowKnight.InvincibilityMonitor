@@ -64,6 +64,8 @@ namespace InvincibilityMonitor
                 InvincibilityCondition condition = (InvincibilityCondition)Activator.CreateInstance(t);
                 condition.Hook();
                 ActiveConditions.Add(condition);
+
+                DebugMod.AddInfoToSimplePanel("InvincibilityMonitor.Info", t.Name, () => DebugMod.GetStringForBool(condition.Invincible));
             }
 
             ModHooks.HeroUpdateHook += OnHeroUpdate;
